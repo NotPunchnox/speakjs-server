@@ -54,15 +54,15 @@ const ModalMessage = mongoose.model('messages', {
 app.get('/message', (req, res)=> {
   ModalMessage.find({}, (e, d)=> {
     if (e) return new Error(e)
+    console.log(wss.clients.size)
     if(!d) {
-      console.log(d, 0)
       return res.status(203).json({
-        users: wss.clients.size || 0,
+        users: wss.clients.size,
         number: 0,
         msg: null
       })
-    } else return console.log(d, d.length), res.status(203).json({
-      users: wss.clients.size || 0,
+    } else return res.status(203).json({
+      users: wss.clients.size,
       number: d.length || 0,
       msg: d
     }),
@@ -82,7 +82,6 @@ wss.on('connection', function connection(ws) {
   ws.on('message',
     function incoming(message) {
       wss.clients.forEach(function each(client) {
-        console.log('received: %s', message)
         let m = JSON.parse(message)
         
         if (m.event === 'new') return client.send(JSON.stringify({
