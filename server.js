@@ -61,7 +61,7 @@ app.get('/message', (req, res)=> {
     } else return res.status(203).json({
       number: d.length || 0,
       msg: d
-    })
+    }),
     d.forEach(a=>{
       if(a.expire < Date.now()) {
         ModalMessage.findOne({ expire: a.expire }).exec((err, doc)=>{
