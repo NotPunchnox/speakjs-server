@@ -55,22 +55,24 @@ app.get('/message', (req, res)=> {
   ModalMessage.find({}, (e, d)=> {
     if (e) return new Error(e)
     console.log(wss.clients.size)
-    if(!d) {
+    if (!d) {
       return res.status(203).json({
         users: wss.clients.size,
         number: 0,
         msg: null
       })
     } else return res.status(203).json({
-      users: wss.clients.size,
-      number: d.length || 0,
-      msg: d
-    }),
-    d.forEach(a=>{
-      if(a.expire < Date.now()) {
-        ModalMessage.findOne({ expire: a.expire }).exec((err, doc)=>{
-          if(e) return new Error(e)
-          if(!doc) return new Error('Missing document!')
+        users: wss.clients.size,
+        number: d.length || 0,
+        msg: d
+      }),
+    d.forEach(a=> {
+      if (a.expire < Date.now()) {
+        ModalMessage.findOne({
+          expire: a.expire
+        }).exec((err, doc)=> {
+          if (e) return new Error(e)
+          if (!doc) return new Error('Missing document!')
           doc.remove()
         })
       }
@@ -79,11 +81,31 @@ app.get('/message', (req, res)=> {
 })
 
 wss.on('connection', function connection(ws) {
-  ws.on('message',
-    function incoming(message) {
+  ws.on('message', function incoming(message) {
+    let m = JSON.parse(message)
+    ModalMessage.findOne({
+      username: m.username
+    }).exec((err,
+      d) => {
+      if (err) return new Error(err)
+      var color
+      if (!d) {
+        color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')
+      } else color = d.color
+      var ch = Date.now() + 1800000
+      if (m.event === 'msg') {
+        new ModalMessage({
+          username: m.username,
+          content: new cryptr(String(ch)).encrypt(m.content),
+          color: color,
+          expire: ch,
+          CreatedAt: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
+        }).save((e, r)=> {
+          if (e) return new Error(e)
+          console.log(r)
+        })
+      }
       wss.clients.forEach(function each(client) {
-        let m = JSON.parse(message)
-        
         if (m.event === 'new') return client.send(JSON.stringify({
           event: m.event,
           content: welcome(m.username),
@@ -91,41 +113,23 @@ wss.on('connection', function connection(ws) {
           color: '#42f6da',
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         }))
-        
-        if(m.event === 'leave') return client.send(JSON.stringify({
+
+        if (m.event === 'leave') return client.send(JSON.stringify({
           event: m.event,
           content: m.username + ' a quitté le groupe.',
           username: 'SYSTEME 🤖',
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         }))
-        ModalMessage.findOne({ username: m.username}).exec((err, d) =>{
-       if(err) return new Error(err)
-       var color
-       if(!d) {
-         color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')
-       } else color = d.color
-       var ch = Date.now() + 1800000
         if (m.event === 'msg') return client.send(JSON.stringify({
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds(),
           username: m.username,
           content: m.content,
           event: m.event,
           color: color
-        })),
-        new ModalMessage({
-          username: m.username,
-          content: new cryptr(String(ch)).encrypt(m.content),
-          color: color,
-          expire: ch,
-          CreatedAt:  new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
-        }).save((e, r)=> {
-          if (e) return new Error(e)
-          console.log(r)
-        })
+        }))
       })
-      })
-      
     })
+  })
 })
 
 server.listen(process.env.PORT || 3000, (e)=> {
