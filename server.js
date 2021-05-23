@@ -67,7 +67,7 @@ app.get('/message', (req, res)=> {
       msg: d
     }),
     d.forEach(a=>{
-      if(a.expire > Date.now()) {
+      if(a.expire < Date.now()) {
         ModalMessage.findOne({ expire: a.expire }).exec((err, doc)=>{
           if(e) return new Error(e)
           if(!doc) return new Error('Missing document!')
