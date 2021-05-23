@@ -53,11 +53,12 @@ const ModalMessage = mongoose.model('messages', {
 app.get('/message', (req, res)=> {
   ModalMessage.find({}, (e, d)=> {
     if (e) return new Error(e)
-    if(!d) return res.status(203).json({
-      number: 0,
-      msg: null
-    })
-    res.status(203).json({
+    if(!d) {
+      return res.status(203).json({
+        number: 0,
+        msg: null
+      })
+    } else return res.status(203).json({
       number: d.length || 0,
       msg: d
     })
