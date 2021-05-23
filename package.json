@@ -1,5 +1,5 @@
 {
-  "name": "speak-js",
+  "name": "speakjs-server",
   "version": "1.0.0",
   "description": "speak chiffré en js...",
   "main": "server.js",
