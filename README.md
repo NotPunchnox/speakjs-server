@@ -1,2 +1,2 @@
 # speakjs-server
-Je fais une mini doc pour ceux qui veulent faire leurs propre client
+### Je vais faire une mini doc pour ceux qui veulent faire leurs propre client
