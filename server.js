@@ -57,12 +57,12 @@ app.get('/message', (req, res)=> {
     if(!d) {
       console.log(d, 0)
       return res.status(203).json({
-        users: wss.clients.length || 0,
+        users: wss.clients.size || 0,
         number: 0,
         msg: null
       })
     } else return console.log(d, d.length), res.status(203).json({
-      users: wss.clients.length || 0,
+      users: wss.clients.size || 0,
       number: d.length || 0,
       msg: d
     }),
