@@ -67,7 +67,7 @@ app.get('/message', (req, res)=> {
       msg: d
     }),
     d.forEach(a=>{
-      if(a.expire < Date.now()) {
+      if(a.expire > Date.now()) {
         ModalMessage.findOne({ expire: a.expire }).exec((err, doc)=>{
           if(e) return new Error(e)
           if(!doc) return new Error('Missing document!')
@@ -104,7 +104,7 @@ wss.on('connection', function connection(ws) {
        if(!d) {
          color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')
        } else color = d.color
-       var ch = Date.now() + 18000000
+       var ch = Date.now() + 1800000
         if (m.event === 'msg') return client.send(JSON.stringify({
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds(),
           username: m.username,
