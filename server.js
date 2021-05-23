@@ -126,7 +126,7 @@ wss.on('connection', function connection(ws) {
     })
 })
 
-server.listen(process.env.port || 3000, process.env.host || 'localhost', (e)=> {
+server.listen(process.env.PORT || 3000, (e)=> {
   if (e) throw new Error(e)
   console.info(`Linstening on port ${process.env.port || 3000}`)
 })
