@@ -10,13 +10,14 @@ welcome = function(a) {
   let b = [
     `Hey ${a}`,
     `Ha te voilà ${a}, tu nous as apportés des pizzas ?`,
-    `Un ${a} sauvage est apparu`,
+    `Un ${a} sauvage vient d'apparaître`,
     `Dites bonjour à ${a} !`,
     `Salut ${a} tu nous avait manqué`,
     `Hey ${a} je ne t'ai jamais vu ici`,
     `Hey ${a}, Je te souhaite la bienvenue parmi nous.`,
     `Bienvenue ${a}`,
-    `${a} a rejoint le groupe`
+    `${a} a rejoint le groupe`,
+    `Hey ${a} tu es sur le serveur officiel de speakjs`
   ]
   return b[Math.floor(Math.random()*b.length)]
 }
