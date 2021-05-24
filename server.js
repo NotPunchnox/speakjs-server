@@ -82,6 +82,7 @@ app.get('/message', (req, res)=> {
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
+    if(!JSON.parse(message)) return
     let m = JSON.parse(message)
     ModalMessage.findOne({
       username: m.username
