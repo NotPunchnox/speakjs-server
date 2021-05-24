@@ -109,7 +109,7 @@ wss.on('connection', function connection(ws) {
       }
       wss.clients.forEach(function each(client) {
         var ch = Date.now() + 1800000 / 2.3 * 5
-        ws.on('close', () => return client.send(JSON.stringify({
+        ws.on('close', () => client.send(JSON.stringify({
           expire: ch,
           event: m.event,
           content: new cryptr(String(ch)).encrypt(m.username + ' a quitté le groupe.'),
