@@ -89,8 +89,7 @@ wss.on('connection', function connection(ws) {
     let m = JSON.parse(message)
     ModalMessage.findOne({
       username: m.username
-    }).exec((err,
-      d) => {
+    }).exec((err, d) => {
       if (err) return new Error(err)
       var color
       if (!d) {
@@ -110,20 +109,19 @@ wss.on('connection', function connection(ws) {
       }
       wss.clients.forEach(function each(client) {
         var ch = Date.now() + 1800000 / 2.3 * 5
+        ws.on('close', () => return client.send(JSON.stringify({
+          expire: ch,
+          event: m.event,
+          content: new cryptr(String(ch)).encrypt(m.username + ' a quitté le groupe.'),
+          username: 'SYSTEME 🤖',
+          date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
+        })))
         if (m.event === 'new') return client.send(JSON.stringify({
           expire: ch, 
           event: m.event,
           content: new cryptr(String(ch)).encrypt(welcome(m.username)),
           username: 'SYSTEME 🤖',
           color: '#42f6da',
-          date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
-        }))
-
-        if (m.event === 'leave') return client.send(JSON.stringify({
-          expire: ch,
-          event: m.event,
-          content: new cryptr(String(ch)).encrypt(m.username + ' a quitté le groupe.'),
-          username: 'SYSTEME 🤖',
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         }))
         if (m.event === 'msg') return client.send(JSON.stringify({
