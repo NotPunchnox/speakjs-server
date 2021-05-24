@@ -97,7 +97,7 @@ wss.on('connection', function connection(ws) {
       if (m.event === 'msg') {
         new ModalMessage({
           username: m.username,
-          content: new cryptr(String(ch)).encrypt(m.content),
+          content: new cryptr(String(ch)).encrypt(new cryptr(String(m.expire)).decrypt(m.content)),
           color: color,
           expire: ch,
           CreatedAt: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
