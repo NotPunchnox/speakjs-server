@@ -83,7 +83,9 @@ wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     try {
       JSON.parse(message)
-    } catch return;
+    } catch {
+        return
+      }
     let m = JSON.parse(message)
     ModalMessage.findOne({
       username: m.username
