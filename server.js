@@ -82,6 +82,7 @@ app.get('/message', (req, res)=> {
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
+    if(!JSON.parse(message)) return
     let m = JSON.parse(message)
     ModalMessage.findOne({
       username: m.username
@@ -106,24 +107,29 @@ wss.on('connection', function connection(ws) {
         })
       }
       wss.clients.forEach(function each(client) {
+        var ch = Date.now() + 1800000 / 2.3 * 5
         if (m.event === 'new') return client.send(JSON.stringify({
+          expire: ch, 
           event: m.event,
-          content: welcome(m.username),
+          content: new cryptr(String(ch)).encrypt(welcome(m.username)),
           username: 'SYSTEME 🤖',
           color: '#42f6da',
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         }))
 
         if (m.event === 'leave') return client.send(JSON.stringify({
+          expire: ch,
           event: m.event,
-          content: m.username + ' a quitté le groupe.',
+          content: new cryptr(String(ch)).encrypt(m.username + ' a quitté le groupe.'),
           username: 'SYSTEME 🤖',
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         }))
+        console.log(new cryptr(String(ch)).encrypt(new cryptr(String(m.expire)).decrypt(m.content)), ch)
         if (m.event === 'msg') return client.send(JSON.stringify({
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds(),
           username: m.username,
-          content: m.content,
+          content: new cryptr(String(ch)).encrypt(new cryptr(String(m.expire)).decrypt(m.content)),
+          expire: ch,
           event: m.event,
           color: color
         }))

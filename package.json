@@ -4,8 +4,8 @@
   "description": "speak chiffré en js...",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.17.1",
     "cryptr": "^6.0.2",
+    "express": "^4.17.1",
     "mongoose": "^5.12.10",
     "ws": "^7.4.5"
   },
