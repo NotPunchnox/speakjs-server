@@ -114,6 +114,7 @@ wss.on('connection', function connection(ws) {
           event: m.event,
           content: new cryptr(String(ch)).encrypt(m.username + ' a quitté le groupe.'),
           username: 'SYSTEME 🤖',
+          color: '#42f6da',
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         })))
         if (m.event === 'new') return client.send(JSON.stringify({
