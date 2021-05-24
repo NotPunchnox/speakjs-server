@@ -54,7 +54,6 @@ const ModalMessage = mongoose.model('messages', {
 app.get('/message', (req, res)=> {
   ModalMessage.find({}, (e, d)=> {
     if (e) return new Error(e)
-    console.log(wss.clients.size)
     if (!d) {
       return res.status(203).json({
         users: wss.clients.size,
@@ -103,7 +102,6 @@ wss.on('connection', function connection(ws) {
           CreatedAt: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         }).save((e, r)=> {
           if (e) return new Error(e)
-          console.log(r)
         })
       }
       wss.clients.forEach(function each(client) {
@@ -124,7 +122,6 @@ wss.on('connection', function connection(ws) {
           username: 'SYSTEME 🤖',
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         }))
-        console.log(new cryptr(String(ch)).encrypt(new cryptr(String(m.expire)).decrypt(m.content)), ch)
         if (m.event === 'msg') return client.send(JSON.stringify({
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds(),
           username: m.username,
