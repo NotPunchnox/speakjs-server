@@ -1,6 +1,6 @@
 {
   "name": "speakjs-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "speak chiffré en js...",
   "main": "server.js",
   "dependencies": {
@@ -17,7 +17,9 @@
     "url": "git+https://github.com/NotPunchnox/speakjs-server.git"
   },
   "keywords": [
-    "speak"
+    "speak",
+    "speakjs",
+    "punchnoxx
   ],
   "author": "punchnox",
   "license": "ISC",
