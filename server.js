@@ -104,7 +104,7 @@ wss.on('connection', function connection(ws) {
       if (!d) {
         color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')
         avatar = `https://api.multiavatar.com/${makeid(10)}.svg`
-      } else color = d.color, avatar = d.avatar
+      } else { color = d.color, avatar = d.avatar }
       var ch = Date.now() + 1800000
       if (m.event === 'msg') {
         new ModalMessage({
