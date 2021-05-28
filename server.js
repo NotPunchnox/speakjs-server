@@ -20,6 +20,13 @@ welcome = function(a) {
     `Hey ${a} tu es sur le serveur officiel de speakjs`
   ]
   return b[Math.floor(Math.random()*b.length)]
+},
+  makeid = function(length) {
+  var r           = []
+  var c       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  for ( var i = 0; i < length; i++ ) { r.push(c.charAt(Math.floor(Math.random() * c.length)))
+ }
+ return r.join('')
 }
 
 const config = {
@@ -48,6 +55,7 @@ const ModalMessage = mongoose.model('messages', {
   content: String,
   expire: Number,
   color: String,
+  avatar: String,
   CreatedAt: String
 })
 
@@ -91,16 +99,19 @@ wss.on('connection', function connection(ws) {
       username: m.username
     }).exec((err, d) => {
       if (err) return new Error(err)
-      var color
+      var color,
+          avatar
       if (!d) {
         color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')
-      } else color = d.color
+        avatar = `https://api.multiavatar.com/${makeid(10)}.svg`
+      } else color = d.color, avatar = d.avatar
       var ch = Date.now() + 1800000
       if (m.event === 'msg') {
         new ModalMessage({
           username: m.username,
           content: new cryptr(String(ch)).encrypt(new cryptr(String(m.expire)).decrypt(m.content)),
           color: color,
+          avatar: avatar,
           expire: ch,
           CreatedAt: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         }).save((e, r)=> {
