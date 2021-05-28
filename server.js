@@ -22,8 +22,8 @@ welcome = function(a) {
   return b[Math.floor(Math.random()*b.length)]
 },
   makeid = function(length) {
-  var r           = []
-  var c       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  var r = []
+  var c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   for ( var i = 0; i < length; i++ ) { r.push(c.charAt(Math.floor(Math.random() * c.length)))
  }
  return r.join('')
@@ -100,9 +100,12 @@ wss.on('connection', function connection(ws) {
     }).exec((err, d) => {
       if (err) return new Error(err)
       if (!d) {
-        var color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')
-        var avatar = `https://api.multiavatar.com/${makeid(10)}.svg`
-      } else { var color = d.color var avatar = d.avatar }
+        var color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'),
+            avatar = `https://api.multiavatar.com/${makeid(10)}.svg`
+      } else { 
+        var color = d.color,
+            avatar = d.avatar
+        }
       var ch = Date.now() + 1800000
       if (m.event === 'msg') {
         console.log(avatar)
