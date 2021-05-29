@@ -113,7 +113,7 @@ wss.on('connection', function connection(ws) {
           username: m.username,
           content: new cryptr(String(ch)).encrypt(new cryptr(String(m.expire)).decrypt(m.content)),
           color: color,
-          avatar: avatar || `https://api.multiavatar.com/${makeid(10)}.svg`,
+          avatar: avatar || `https://api.multiavatar.com/${m.username}.svg`,
           expire: ch,
           CreatedAt: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
         }).save((e, r)=> {
