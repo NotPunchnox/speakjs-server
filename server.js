@@ -20,13 +20,6 @@ welcome = function(a) {
     `Hey ${a} tu es sur le serveur officiel de speakjs`
   ]
   return b[Math.floor(Math.random()*b.length)]
-},
-  makeid = function(length) {
-  var r = []
-  var c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  for ( var i = 0; i < length; i++ ) { r.push(c.charAt(Math.floor(Math.random() * c.length)))
- }
- return r.join('')
 }
 
 const config = {
