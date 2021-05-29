@@ -101,7 +101,7 @@ wss.on('connection', function connection(ws) {
       if (err) return new Error(err)
       if (!d) {
         var color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'),
-            avatar = `https://api.multiavatar.com/${makeid(10)}.svg`
+            avatar = `https://api.multiavatar.com/${m.username}.svg`
       } else { 
         var color = d.color,
             avatar = d.avatar
