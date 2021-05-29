@@ -136,6 +136,8 @@ wss.on('connection', function connection(ws) {
           expire: ch, 
           event: m.event,
           content: new cryptr(String(ch)).encrypt(welcome(m.username)),
+          user: m.username,
+          avatar: avatar,
           username: 'SYSTEME 🤖',
           color: '#42f6da',
           date: new Date().getUTCHours() + ':' + new Date().getUTCMinutes() + ":" + new Date().getUTCSeconds()
